@@ -1,13 +1,8 @@
-﻿<Properties StartupConfiguration="{F036704E-86E2-9E63-8600-D37D2BC6C29B}|Tests unitaires">
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CameraManager.cs">
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Managers/CameraManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PersonalMethods.cs" Line="89" Column="2" />
-      <File FileName="Assets/Scripts/CameraManager.cs" Line="79" Column="25" />
-      <File FileName="Assets/Scripts/Tags.cs" Line="16" Column="37" />
-      <File FileName="Assets/Scripts/Enum.cs" Line="5" Column="8" />
-      <File FileName="Assets/Scripts/UIManager.cs" Line="51" Column="42" />
+      <File FileName="Assets/Scripts/Managers/CameraManager.cs" Line="182" Column="6" />
+      <File FileName="Assets/Scripts/Managers/GameManager.cs" Line="68" Column="52" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />

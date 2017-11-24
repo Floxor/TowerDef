@@ -14,6 +14,7 @@ public static class Tags {
 	public const string _cameraHolder = "CameraHolder";
 	public const string _turret = "Turret";
 	public const string _field = "Field";
+	public const string _cameraSlot = "CameraSlot";
 
 	#endregion
 

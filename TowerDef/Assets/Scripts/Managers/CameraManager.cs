@@ -15,7 +15,12 @@ public class CameraManager : Singleton<CameraManager> {
 
 	Transform _mainCamera;
 	[SerializeField]
-	List<Transform> _cameraSlots = new List<Transform>();
+	List<CameraSlot> _cameraSlots = new List<CameraSlot>();
+
+	public List<CameraSlot> CameraSlots {
+		get { return _cameraSlots; }
+		set { _cameraSlots = value; }
+	}
 
 	int _startSlotIndex = 0;
 	int _previousSlotIndex;
@@ -31,15 +36,21 @@ public class CameraManager : Singleton<CameraManager> {
 
 	void Awake() {
 		_mainCamera = GameObject.FindGameObjectWithTag(Tags._mainCamera).transform;
-		for(int i = 0; i < transform.childCount; i++) {
-			_cameraSlots.Add(transform.GetChild(i));
+
+		GameObject[] _camSlots = GameObject.FindGameObjectsWithTag(Tags._cameraSlot);
+
+		for(int i = 0; i < _camSlots.Length -1; ++i) {
+			for(int j = 0; j < _cameraSlots.Count; ++j) {
+				if (_camSlots[i].GetInstanceID() == _cameraSlots[j].GetInstanceID()) {
+					break;
+				}
+			}
+			_cameraSlots.Add(_camSlots[i].GetComponent<CameraSlot>());
 		}
 	}
 
-	//	void Start() {
-	//		ChangeSlot (_startSlotIndex);
-	//		_actualSlotIndex = _startSlotIndex;
-	//	}
+	void FixedUpdate() {
+	}
 
 	void Update() {
 		if(Input.GetKeyDown(KeyCode.Space)) {
@@ -52,6 +63,7 @@ public class CameraManager : Singleton<CameraManager> {
 			}
 		}
 	}
+
 
 	#endregion
 
@@ -69,20 +81,20 @@ public class CameraManager : Singleton<CameraManager> {
 
 		_onTranslation = true;
 		
-		StartCoroutine(PersonalMethods.MyLerp(_mainCamera, _cameraSlots[p_index].position, _translationTime));
-		StartCoroutine(PersonalMethods.MySlerp(_mainCamera, _cameraSlots[p_index].rotation, _translationTime));
-		_mainCamera.SetParent(_cameraSlots[p_index]);
+		StartCoroutine(PersonalMethods.MyLerp(_mainCamera, _cameraSlots[p_index].transform.position, _translationTime));
+		StartCoroutine(PersonalMethods.MySlerp(_mainCamera, _cameraSlots[p_index].transform.rotation, _translationTime));
+		_mainCamera.SetParent(_cameraSlots[p_index].transform);
 		
-		yield return new WaitForSeconds(_translationTime);
+		yield return new WaitForSeconds(_translationTime * 0.75f); //
 
-		ChangeCameraState((CameraState)p_index);
+		ChangeCameraState(_cameraSlots[p_index]._slotType);
 
 		StopCoroutine("PersonalMethods.MyLerp");
 		StopCoroutine("PersonalMethods.MySlerp");
 		
 		if(_previousSlotIndex != 0) {
-			_cameraSlots[_previousSlotIndex].position = tempPos;
-			_cameraSlots[_previousSlotIndex].rotation = tempRot;
+			_cameraSlots[_previousSlotIndex].transform.position = tempPos;
+			_cameraSlots[_previousSlotIndex].transform.rotation = tempRot;
 		}
 		_previousSlotIndex = _actualSlotIndex;
 
@@ -95,6 +107,29 @@ public class CameraManager : Singleton<CameraManager> {
 		return CameraManager.Instance._currentCameraState;
 	}
 
+	void BeforeChangeState(CameraState p_camState) {
+		switch(_currentCameraState) {
+			case CameraState.MENU:
+				break;
+
+			case CameraState.EDITOR:
+				break;
+
+			case CameraState.CASTLE:
+				break;
+
+			case CameraState.HERO:
+				GameManager.Instance.ChangeStateComponent(_mainCamera.parent.parent.gameObject, "PersonController");
+				break;
+
+			case CameraState.TURRET:
+				break;
+
+			default :
+				break;
+		}
+	}
+
 	public void ChangeCameraState(CameraState p_camState) {
 
 		if(p_camState == _currentCameraState) {
@@ -105,6 +140,8 @@ public class CameraManager : Singleton<CameraManager> {
 			_onChangeState(p_camState);
 		}
 
+		BeforeChangeState(_currentCameraState);
+
 		_currentCameraState = p_camState;
 
 		switch(_currentCameraState) {
@@ -113,6 +150,10 @@ public class CameraManager : Singleton<CameraManager> {
 				// UI de Manager
 				// Camera Déplacement OK
 				// Camera Rotation NOPE
+				break;
+
+			case CameraState.EDITOR:
+				// Debug.Log("CameraState de EDITOR");
 				break;
 
 			case CameraState.CASTLE:
@@ -125,8 +166,7 @@ public class CameraManager : Singleton<CameraManager> {
 			case CameraState.HERO:
 				//Debug.Log ("CameraState de HERO");
 				// UI de Hero stats et compétences
-				// Camera Déplacement OK
-				// Camera Rotation OK
+				GameManager.Instance.ChangeStateComponent(_mainCamera.parent.parent.gameObject, "PersonController");
 				break;
 
 			case CameraState.TURRET:
@@ -135,8 +175,11 @@ public class CameraManager : Singleton<CameraManager> {
 				// Camera Déplacement NOPE
 				// Camera Rotation OK
 				break;
+
 			default :
-				Debug.Log ("Tag : " + _currentCameraState + " est non reconnu");
+				if(_currentCameraState != CameraState.NONE) {
+					Debug.Log ("Tag : " + _currentCameraState + " est non reconnu");
+				}
 				break;
 		}
 	//		Debug.Log ("---------------------------");

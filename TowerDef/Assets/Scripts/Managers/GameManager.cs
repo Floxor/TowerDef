@@ -10,7 +10,6 @@ public class GameManager : Singleton<GameManager> {
 	[SerializeField]
 	GameObject _turretPrefab;
 	RaycastHit _hit;
-	float _yPadding = 2;
 
 	#endregion
 
@@ -52,14 +51,26 @@ public class GameManager : Singleton<GameManager> {
 			// UI Amélioration Turret
 			break;
 		case Tags._field:
-			Debug.Log ("Field");
+			//Debug.Log ("Field");
 			// UI Création d'unité
-			Vector3 spawnPos = new Vector3 (_hit.point.x, _hit.point.y + _yPadding, _hit.point.z);
-			Instantiate (_turretPrefab, spawnPos, Quaternion.identity);
+			TurretManager.Instance.Create(_hit.point);
 			break;
 		default:
 			Debug.Log ("Tag : " + p_tag + " est non reconnu");
 			break;
+		}
+	}
+
+	public void ChangeStateComponent(GameObject p_obj , string p_classType) {
+		switch(p_classType) {
+			case "PersonController":
+				if (p_obj.GetComponent(p_classType) != null) {
+					p_obj.GetComponent<PersonController>().enabled = !p_obj.GetComponent<PersonController>().enabled;
+				}
+				break;
+			default:
+				Debug.Log("Type : " + p_classType + " n'est pas gérer");
+				break;
 		}
 	}
 

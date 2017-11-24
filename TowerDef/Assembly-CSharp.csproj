@@ -51,13 +51,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\CameraManager.cs" />
-     <Compile Include="Assets\Scripts\Enum.cs" />
-     <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\PersonalMethods.cs" />
-     <Compile Include="Assets\Scripts\Singleton.cs" />
-     <Compile Include="Assets\Scripts\Tags.cs" />
-     <Compile Include="Assets\Scripts\UIManager.cs" />
+     <Compile Include="Assets\Scripts\CameraSlot.cs" />
+     <Compile Include="Assets\Scripts\Global\Enum.cs" />
+     <Compile Include="Assets\Scripts\Global\PersonalMethods.cs" />
+     <Compile Include="Assets\Scripts\Global\Singleton.cs" />
+     <Compile Include="Assets\Scripts\Global\Tags.cs" />
+     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\CompetencesManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\MovementManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\TurretManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
+     <Compile Include="Assets\Scripts\PersonController.cs" />
+     <Compile Include="Assets\Scripts\PersonMovement.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

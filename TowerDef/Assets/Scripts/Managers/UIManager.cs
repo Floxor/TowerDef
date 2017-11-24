@@ -33,6 +33,11 @@ public class UIManager : MonoBehaviour {
 			// UI de Manager
 			break;
 
+		case CameraState.EDITOR:
+//			Debug.Log ("UI de EDITOR");
+			// UI de Editor stats et compétences
+			break;
+
 		case CameraState.CASTLE:
 //			Debug.Log ("UI de CASTLE");
 			// UI de Castle stats et compétences
