@@ -4,9 +4,12 @@ using UnityEngine;
 using System;
 
 public class UIManager : MonoBehaviour {
-	
+
 	#region Variables
 
+	GameObject _canvas;
+
+	public GameObject _menuRadial;
 
 	#endregion
 
@@ -14,6 +17,8 @@ public class UIManager : MonoBehaviour {
 
 	void OnEnable() {
 		CameraManager.Instance._onChangeState += ChangeCameraState;
+
+		_canvas = GameObject.FindWithTag(Tags._canvas);
 	}
 
 	void OnDisable() {
@@ -22,9 +27,29 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
+	void Update() {
+		//if(CameraManager.Instance._currentCameraState == CameraState.MENU) {
+			if(Input.GetKeyDown(KeyCode.Mouse0)) {
+				SetRadial(true);
+			} else if (Input.anyKeyDown) {
+				SetRadial(false);
+			}
+		//}
+	}
+
 	#endregion
 
 	#region Methods
+
+	public void SetRadial(bool p_active) {
+		if (p_active) {
+			Vector2 pos;
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, Input.mousePosition, _canvas.GetComponent<Canvas>().worldCamera, out pos);
+			_menuRadial.transform.position = _canvas.transform.TransformPoint(pos);
+		}
+
+		_menuRadial.gameObject.SetActive(p_active);
+	}
 
 	public void ChangeCameraState(CameraState p_camState) {
 		switch (p_camState) {

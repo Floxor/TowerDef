@@ -8,5 +8,7 @@ public class CameraSlot : MonoBehaviour {
 
 	public CameraState _slotType;
 
+	public int _index;
+
 	#endregion
 }

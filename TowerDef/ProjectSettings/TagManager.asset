@@ -9,6 +9,7 @@ TagManager:
   - Turret
   - Field
   - CameraSlot
+  - Canvas
   layers:
   - Default
   - TransparentFX

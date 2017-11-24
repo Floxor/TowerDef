@@ -51,8 +51,8 @@ public class GameManager : Singleton<GameManager> {
 			// UI Amélioration Turret
 			break;
 		case Tags._field:
-			//Debug.Log ("Field");
-			// UI Création d'unité
+				//Debug.Log ("Field");
+				// UI Création d'unité
 			TurretManager.Instance.Create(_hit.point);
 			break;
 		default:

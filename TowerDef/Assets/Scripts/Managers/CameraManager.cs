@@ -22,6 +22,8 @@ public class CameraManager : Singleton<CameraManager> {
 		set { _cameraSlots = value; }
 	}
 
+	RaycastHit _hit;
+
 	int _startSlotIndex = 0;
 	int _previousSlotIndex;
 	int _actualSlotIndex = 0;
@@ -45,6 +47,7 @@ public class CameraManager : Singleton<CameraManager> {
 					break;
 				}
 			}
+			_camSlots[i].GetComponent<CameraSlot>()._index = i;
 			_cameraSlots.Add(_camSlots[i].GetComponent<CameraSlot>());
 		}
 	}
@@ -53,13 +56,16 @@ public class CameraManager : Singleton<CameraManager> {
 	}
 
 	void Update() {
-		if(Input.GetKeyDown(KeyCode.Space)) {
-			if(!_onTranslation) {
-				_actualSlotIndex += 1;
-				if(_actualSlotIndex > _cameraSlots.Count - 1) {
-					_actualSlotIndex = 0;
+		if(!_onTranslation) {
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				StartCoroutine(ChangeSlot(0));
+			}
+			if(Input.GetKeyDown(KeyCode.Space)) {
+				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				if (Physics.Raycast(ray, out _hit)) {
+					Debug.Log(_hit.transform.name);
+					StartCoroutine(ChangeSlot(CheckPossibilities(_hit)));
 				}
-				StartCoroutine(ChangeSlot(_actualSlotIndex));
 			}
 		}
 	}
@@ -73,7 +79,19 @@ public class CameraManager : Singleton<CameraManager> {
 		StartCoroutine(ChangeSlot((int)_startCameraState));
 	}
 
+	int CheckPossibilities(RaycastHit p_hit) {
+		if (p_hit.collider.transform.childCount > 0) {
+			if(p_hit.collider.transform.GetChild(0).GetComponent<CameraSlot>()) {
+				return p_hit.collider.transform.GetChild(0).GetComponent<CameraSlot>()._index;
+			}
+		}
+		return -1;
+	}
+
 	IEnumerator ChangeSlot(int p_index) {
+		if (p_index < 0 || p_index > _cameraSlots.Count) {
+			StopCoroutine("ChangeSlot");
+		} 
 		Vector3 tempPos = _mainCamera.position;
 		Quaternion tempRot = _mainCamera.rotation;
 

@@ -32,6 +32,7 @@ public class TurretManager : Singleton<TurretManager> {
 
 		GameObject newTurret = Instantiate (_turretPrefab, spawnPos, rndRot);
 		CameraManager.Instance.CameraSlots.Add(newTurret.transform.GetChild(0).GetComponent<CameraSlot>());
+		newTurret.transform.GetChild(0).GetComponent<CameraSlot>()._index = CameraManager.Instance.CameraSlots.Count - 1;
 	}
 
 	#endregion
