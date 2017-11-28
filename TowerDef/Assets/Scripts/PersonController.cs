@@ -8,6 +8,16 @@ public class PersonController : MonoBehaviour {
 
 	PersonMovement _persoMovement;
 
+	[SerializeField]
+	bool _allowedMovement = false;
+	[SerializeField]
+	bool _allowedRotationOnX = false;
+	[SerializeField]
+	bool _allowedRotationOnY = false;
+	bool _canMove;
+	bool _canRotateOnX;
+	bool _canRotateOnY;
+
 	float _speedMove = 5f;
 
 	float _lookSensitivity = 3f;
@@ -19,32 +29,46 @@ public class PersonController : MonoBehaviour {
 	void OnEnable () {
 		_persoMovement = GetComponent<PersonMovement>();
 		_persoMovement.enabled = true;
-		_persoMovement._camera = transform.GetChild(0).GetChild(0);
+		_persoMovement.PersonCamera = transform.GetChild(0).GetChild(0);
+		Cursor.lockState = CursorLockMode.Confined;
+
+		_canMove = _allowedMovement;
+		_canRotateOnX = _allowedRotationOnX;
+		_canRotateOnY = _allowedRotationOnY;
 	}
 
 	void OnDisable() {
+		_canMove = _canRotateOnX = _canRotateOnY = false;
+		_persoMovement.PersonCamera = null;
 		_persoMovement.enabled = false;
 	}
 
 	void Update () {
-		float _xMov = Input.GetAxisRaw("Horizontal");
-		float _zMov = Input.GetAxisRaw("Vertical");
+		if (_canMove) {
+			float _xMov = Input.GetAxisRaw("Horizontal");
+			float _zMov = Input.GetAxisRaw("Vertical");
 
-		Vector3 _moveHori = transform.right * _xMov;
-		Vector3 _moveVert = transform.forward * _zMov;
+			Vector3 _moveHori = transform.right * _xMov;
+			Vector3 _moveVert = transform.forward * _zMov;
 
-		Vector3 _velocity = (_moveHori + _moveVert).normalized * _speedMove;
+			Vector3 _velocity = (_moveHori + _moveVert).normalized * _speedMove;
 
-		_persoMovement.Move(_velocity);
+			_persoMovement.Move(_velocity);
+		}
 
-		float _yRot = Input.GetAxisRaw("Mouse X");
-		Vector3 _Xrotation = new Vector3(0 , _yRot , 0) * _lookSensitivity;
-		
-		float _xRot = Input.GetAxisRaw("Mouse Y");
-		Vector3 _Yrotation = new Vector3(-_xRot, 0, 0) * _lookSensitivity;
+		if (_canRotateOnX) {
+			float _yRot = Input.GetAxisRaw("Mouse X");
+			Vector3 _Xrotation = new Vector3(0 , _yRot , 0) * _lookSensitivity;
 
-		_persoMovement.Rotate(_Xrotation);
-		_persoMovement.RotateCam(_Yrotation);
+			_persoMovement.Rotate(_Xrotation);
+		}
+
+		if (_canRotateOnY) {
+			float _xRot = Input.GetAxisRaw("Mouse Y");
+			Vector3 _Yrotation = new Vector3(-_xRot, 0, 0) * _lookSensitivity;
+
+			_persoMovement.RotateCam(_Yrotation);
+		}
 	}
 
 	#endregion

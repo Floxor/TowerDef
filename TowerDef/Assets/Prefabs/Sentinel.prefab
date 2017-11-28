@@ -55,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1420101968766288}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4490297265273844}
@@ -68,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1273169959090344}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -31.27}
+  m_LocalPosition: {x: 0, y: 0, z: 44.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4052253615765668}
@@ -126,10 +126,10 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!114 &114022239701427782
 MonoBehaviour:
@@ -142,7 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeb856f4ed9a46af8fab814c429ec9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
 --- !u!114 &114283952196892394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slotType: 3
+  _index: 0
 --- !u!114 &114667032431004686
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -166,6 +166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c9727648f63420a8bb978f5ccb3697, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _allowedMovement: 1
+  _allowedRotationOnX: 1
+  _allowedRotationOnY: 1
 --- !u!135 &135304376482768128
 SphereCollider:
   m_ObjectHideFlags: 1

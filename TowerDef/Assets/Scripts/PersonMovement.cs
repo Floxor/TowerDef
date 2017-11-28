@@ -8,8 +8,11 @@ public class PersonMovement : MonoBehaviour {
 	#region Variables
 
 	Rigidbody _rigidbody;
-	[HideInInspector]
-	public Transform _camera;
+	Transform _personCamera;
+	public Transform PersonCamera {
+		get { return _personCamera; }
+		set { _personCamera = value; }
+	}
 
 	Vector3 _velocity = Vector3.zero;
 	Vector3 _rotation = Vector3.zero;
@@ -53,8 +56,8 @@ public class PersonMovement : MonoBehaviour {
 
 	void PerformRotation() {
 		_rigidbody.MoveRotation(_rigidbody.rotation * Quaternion.Euler(_rotation));
-		if (_camera != null) {
-			_camera.Rotate(_camRot);
+		if (_personCamera != null) {
+			_personCamera.Rotate(_camRot);
 		}
 	}
 

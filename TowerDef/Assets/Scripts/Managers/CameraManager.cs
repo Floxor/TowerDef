@@ -63,8 +63,10 @@ public class CameraManager : Singleton<CameraManager> {
 			if(Input.GetKeyDown(KeyCode.Space)) {
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				if (Physics.Raycast(ray, out _hit)) {
-					Debug.Log(_hit.transform.name);
-					StartCoroutine(ChangeSlot(CheckPossibilities(_hit)));
+					if (_hit.collider.transform.childCount > 0) {
+						Debug.Log(_hit.transform.name);
+						StartCoroutine(ChangeSlot(CheckPossibilities(_hit)));
+					}
 				}
 			}
 		}
@@ -90,34 +92,35 @@ public class CameraManager : Singleton<CameraManager> {
 
 	IEnumerator ChangeSlot(int p_index) {
 		if (p_index < 0 || p_index > _cameraSlots.Count) {
-			StopCoroutine("ChangeSlot");
-		} 
-		Vector3 tempPos = _mainCamera.position;
-		Quaternion tempRot = _mainCamera.rotation;
+			yield return null;
+		} else {
+			Vector3 tempPos = _mainCamera.position;
+			Quaternion tempRot = _mainCamera.rotation;
 
-		ChangeCameraState(CameraState.NONE);
+			ChangeCameraState(CameraState.NONE);
 
-		_onTranslation = true;
-		
-		StartCoroutine(PersonalMethods.MyLerp(_mainCamera, _cameraSlots[p_index].transform.position, _translationTime));
-		StartCoroutine(PersonalMethods.MySlerp(_mainCamera, _cameraSlots[p_index].transform.rotation, _translationTime));
-		_mainCamera.SetParent(_cameraSlots[p_index].transform);
-		
-		yield return new WaitForSeconds(_translationTime * 0.75f); //
+			_onTranslation = true;
 
-		ChangeCameraState(_cameraSlots[p_index]._slotType);
+			StartCoroutine(PersonalMethods.MyLerp(_mainCamera, _cameraSlots[p_index].transform.position, _translationTime));
+			StartCoroutine(PersonalMethods.MySlerp(_mainCamera, _cameraSlots[p_index].transform.rotation, _translationTime));
+			_mainCamera.SetParent(_cameraSlots[p_index].transform);
+			
+			yield return new WaitForSeconds(_translationTime * 0.75f);
 
-		StopCoroutine("PersonalMethods.MyLerp");
-		StopCoroutine("PersonalMethods.MySlerp");
-		
-		if(_previousSlotIndex != 0) {
-			_cameraSlots[_previousSlotIndex].transform.position = tempPos;
-			_cameraSlots[_previousSlotIndex].transform.rotation = tempRot;
+			ChangeCameraState(_cameraSlots[p_index]._slotType);
+
+			StopCoroutine("PersonalMethods.MyLerp");
+			StopCoroutine("PersonalMethods.MySlerp");
+			
+			if(_previousSlotIndex != 0) {
+				_cameraSlots[_previousSlotIndex].transform.position = tempPos;
+				_cameraSlots[_previousSlotIndex].transform.rotation = tempRot;
+			}
+			_previousSlotIndex = _actualSlotIndex;
+
+			_onTranslation = false;
 		}
-		_previousSlotIndex = _actualSlotIndex;
 
-		_onTranslation = false;
-		
 		StopCoroutine("ChangeSlot");
 	}
 
@@ -141,6 +144,7 @@ public class CameraManager : Singleton<CameraManager> {
 				break;
 
 			case CameraState.TURRET:
+				GameManager.Instance.ChangeStateComponent(_mainCamera.parent.parent.gameObject, "PersonController");
 				break;
 
 			default :
@@ -168,6 +172,7 @@ public class CameraManager : Singleton<CameraManager> {
 				// UI de Manager
 				// Camera Déplacement OK
 				// Camera Rotation NOPE
+				Cursor.lockState = CursorLockMode.Confined;
 				break;
 
 			case CameraState.EDITOR:
@@ -192,6 +197,7 @@ public class CameraManager : Singleton<CameraManager> {
 				// UI de Turret stats et compétences
 				// Camera Déplacement NOPE
 				// Camera Rotation OK
+				GameManager.Instance.ChangeStateComponent(_mainCamera.parent.parent.gameObject, "PersonController");
 				break;
 
 			default :
