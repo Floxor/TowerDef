@@ -7,8 +7,6 @@ public class GameManager : Singleton<GameManager> {
 
 	#region Variables
 
-	[SerializeField]
-	GameObject _turretPrefab;
 	RaycastHit _hit;
 
 	#endregion

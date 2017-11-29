@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slotType: 0
+  _index: 0
 --- !u!114 &114856266615516666
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,6 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915707cbaebbd4f87bb0b37cc865961a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _menuRadial: {fileID: 0}
 --- !u!114 &114924945911571332
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -224,4 +226,5 @@ MonoBehaviour:
   _currentCameraState: 0
   _cameraSlots:
   - {fileID: 114182370998847988}
+  _camSlots: []
   _translationTime: 1

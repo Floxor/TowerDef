@@ -21,7 +21,7 @@ public class CameraManager : Singleton<CameraManager> {
 		get { return _cameraSlots; }
 		set { _cameraSlots = value; }
 	}
-
+	public GameObject[] _camSlots;
 	RaycastHit _hit;
 
 	int _startSlotIndex = 0;
@@ -39,16 +39,17 @@ public class CameraManager : Singleton<CameraManager> {
 	void Awake() {
 		_mainCamera = GameObject.FindGameObjectWithTag(Tags._mainCamera).transform;
 
-		GameObject[] _camSlots = GameObject.FindGameObjectsWithTag(Tags._cameraSlot);
+		_camSlots = GameObject.FindGameObjectsWithTag(Tags._cameraSlot);
 
-		for(int i = 0; i < _camSlots.Length -1; ++i) {
+		for(int i = 0; i < _camSlots.Length; ++i) {
 			for(int j = 0; j < _cameraSlots.Count; ++j) {
-				if (_camSlots[i].GetInstanceID() == _cameraSlots[j].GetInstanceID()) {
+				if (_cameraSlots.Contains(_camSlots[i].GetComponent<CameraSlot>())) {
 					break;
+				} else {
+					_camSlots[i].GetComponent<CameraSlot>()._index = i;
+					_cameraSlots.Add(_camSlots[i].GetComponent<CameraSlot>());
 				}
 			}
-			_camSlots[i].GetComponent<CameraSlot>()._index = i;
-			_cameraSlots.Add(_camSlots[i].GetComponent<CameraSlot>());
 		}
 	}
 
@@ -137,6 +138,7 @@ public class CameraManager : Singleton<CameraManager> {
 				break;
 
 			case CameraState.CASTLE:
+				GameManager.Instance.ChangeStateComponent(_mainCamera.parent.parent.gameObject, "PersonController");
 				break;
 
 			case CameraState.HERO:
@@ -184,6 +186,7 @@ public class CameraManager : Singleton<CameraManager> {
 				// UI de Castle stats et compétences
 				// Camera Déplacement NOPE
 				// Camera Rotation OK
+				GameManager.Instance.ChangeStateComponent(_mainCamera.parent.parent.gameObject, "PersonController");
 				break;
 
 			case CameraState.HERO:
