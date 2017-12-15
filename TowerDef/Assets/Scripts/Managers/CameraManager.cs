@@ -11,7 +11,10 @@ public class CameraManager : Singleton<CameraManager> {
 
 	[HideInInspector]
 	public CameraState _startCameraState = CameraState.MENU;
-	public CameraState _currentCameraState;
+	CameraState _currentCameraState;
+	public CameraState CurrentCameraState {
+		get { return _currentCameraState; }
+	}
 
 	Transform _mainCamera;
 	[SerializeField]
@@ -126,7 +129,7 @@ public class CameraManager : Singleton<CameraManager> {
 	}
 
 	public CameraState GetCameraState() {
-		return CameraManager.Instance._currentCameraState;
+		return _currentCameraState;
 	}
 
 	void BeforeChangeState(CameraState p_camState) {
@@ -174,7 +177,6 @@ public class CameraManager : Singleton<CameraManager> {
 				// UI de Manager
 				// Camera Déplacement OK
 				// Camera Rotation NOPE
-				Cursor.lockState = CursorLockMode.Confined;
 				break;
 
 			case CameraState.EDITOR:

@@ -21,7 +21,7 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	void Update() {
-		if (CameraManager.Instance._currentCameraState == CameraState.MENU) {
+		if (CameraManager.Instance.CurrentCameraState == CameraState.MENU) {
 			if (Input.GetKeyDown(KeyCode.Mouse1)) {
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				if (Physics.Raycast(ray, out _hit)) {

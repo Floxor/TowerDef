@@ -62,6 +62,10 @@
      <Compile Include="Assets\Scripts\Managers\MovementManager.cs" />
      <Compile Include="Assets\Scripts\Managers\TurretManager.cs" />
      <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
+     <Compile Include="Assets\Scripts\MapGenerator.cs" />
+     <Compile Include="Assets\Scripts\PathFinding\MyGrid.cs" />
+     <Compile Include="Assets\Scripts\PathFinding\Node.cs" />
+     <Compile Include="Assets\Scripts\PathFinding\Pathfinding.cs" />
      <Compile Include="Assets\Scripts\PersonController.cs" />
      <Compile Include="Assets\Scripts\PersonMovement.cs" />
  <Reference Include="UnityEngine.UI">

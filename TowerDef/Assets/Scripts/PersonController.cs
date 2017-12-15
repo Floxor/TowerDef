@@ -30,17 +30,20 @@ public class PersonController : MonoBehaviour {
 		_persoMovement = GetComponent<PersonMovement>();
 		_persoMovement.enabled = true;
 		_persoMovement.PersonCamera = transform.GetChild(0).GetChild(0);
-		Cursor.lockState = CursorLockMode.Confined;
 
-		_canMove = _allowedMovement;
-		_canRotateOnX = _allowedRotationOnX;
-		_canRotateOnY = _allowedRotationOnY;
+		Init();
 	}
 
 	void OnDisable() {
 		_canMove = _canRotateOnX = _canRotateOnY = false;
 		_persoMovement.PersonCamera = null;
 		_persoMovement.enabled = false;
+	}
+
+	void Init() {
+		_canMove = _allowedMovement;
+		_canRotateOnX = _allowedRotationOnX;
+		_canRotateOnY = _allowedRotationOnY;
 	}
 
 	void Update () {
